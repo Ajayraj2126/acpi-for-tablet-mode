@@ -1,0 +1,50 @@
+src/mainboard/hp/redrix/acpi/ec_tablet.asl | 54 
+ src/mainboard/hp/redrix/acpi/dsdt.asl      |  2 
+ 2 files changed, 56 insertions(+)
+ create mode 100644 src/mainboard/hp/redrix/acpi/ec_tablet.asl
+
+diff --git a/src/mainboard/hp/redrix/acpi/ec_tablet.asl b/src/mainboard/hp/redrix/acpi/ec_tablet.asl
+new file mode 100644
+index 0000000..2222222
+--- /dev/null
+ b/src/mainboard/hp/redrix/acpi/ec_tablet.asl
+@@ -0,0 +1,54 @@
+Scope (\_SB.PCI0.LPCB)
+{
+    Device (EC0)
+    {
+        OperationRegion (ERAM, EmbeddedControl, 0x00, 0xFF)
+        Field (ERAM, ByteAcc, NoLock, Preserve)
+        {
+            Offset (0xD5),
+            HMOD, 8
+        }
+
+        Method (TBMS, 0, NotSerialized)
+        {
+            If (And (HMOD, 0x04))
+            {
+                Return (1)
+            }
+            Else
+            {
+                Return (0)
+            }
+        }
+
+        Method (_Q42, 0, NotSerialized)
+        {
+            \_SB.TBLT.TBUP()
+        }
+    }
+}
+diff --git a/src/mainboard/hp/redrix/acpi/dsdt.asl b/src/mainboard/hp/redrix/acpi/dsdt.asl
+index abcdef0..abcdef1 100644
+--- a/src/mainboard/hp/redrix/acpi/dsdt.asl
+ b/src/mainboard/hp/redrix/acpi/dsdt.asl
+@@ -25,6 +25,8 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "COREBT", "REDRIX", 0x00000001)
+     Scope (\_SB)
+     {
+        #include "tablet.asl"
+        #include "ec_tablet.asl"
+     }

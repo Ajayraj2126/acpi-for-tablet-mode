@@ -1,0 +1,47 @@
+ src/mainboard/hp/redrix/acpi/tablet.asl | 58 
+ 1 file changed, 58 insertions(+)
+ create mode 100644 src/mainboard/hp/redrix/acpi/tablet.asl
+
+diff --git a/src/mainboard/hp/redrix/acpi/tablet.asl b/src/mainboard/hp/redrix/acpi/tablet.asl
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
+ b/src/mainboard/hp/redrix/acpi/tablet.asl
+@@ -0,0 +1,58 @@
+Device (TBLT)
+{
+    Name (_HID, "INT33D6")
+    Name (_CID, "PNP0C60")
+    Name (_UID, 0)
+
+    Name (TBMD, 0)
+
+    Method (_STA, 0, NotSerialized)
+    {
+        Return (0x0F)
+    }
+
+    Method (_CRS, 0, NotSerialized)
+    {
+        Name (RBUF, ResourceTemplate()
+        {
+            GpioInt (Edge, ActiveBoth, ExclusiveAndWake, PullDefault, 0,
+                "\\_SB.GPO0", 0, ResourceConsumer)
+            {
+                23
+            }
+        })
+        Return (RBUF)
+    }
+
+    Method (_PSR, 0, NotSerialized)
+    {
+        Return (TBMD)
+    }
+
+    Method (TBUP, 0, NotSerialized)
+    {
+        Store (\_SB.PCI0.LPCB.EC0.TBMS(), TBMD)
+        Notify (TBLT, 0x80)
+    }
+}

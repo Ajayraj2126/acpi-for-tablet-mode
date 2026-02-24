@@ -1,0 +1,19 @@
+src/mainboard/hp/redrix/mainboard.c | 14 
+ 1 file changed, 14 insertions(+)
+
+diff --git a/src/mainboard/hp/redrix/mainboard.c b/src/mainboard/hp/redrix/mainboard.c
+index 1234567..7654321 100644
+--- a/src/mainboard/hp/redrix/mainboard.c
+ b/src/mainboard/hp/redrix/mainboard.c
+@@ -1,5 +1,19 @@
+ #include <device/device.h>
+ #include <acpi/acpi.h>
+ 
+static void mainboard_enable(struct device *dev)
+{
+    enable_sci();
+}
+
+ struct chip_operations mainboard_ops = {
++    .enable_dev = mainboard_enable,
+};
